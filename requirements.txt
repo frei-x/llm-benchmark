@@ -1,0 +1,5 @@
+numpy
+datasets
+tqdm
+transformers
+huggingface_hub
