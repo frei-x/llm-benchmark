@@ -246,16 +246,16 @@ async def async_request_openai_completions(
             "model": request_func_input.model_name,
             "prompt": request_func_input.prompt,
             "temperature": 0.0,
-            "best_of": request_func_input.best_of,
+            # "best_of": request_func_input.best_of,
             "max_tokens": request_func_input.output_len,
-            "logprobs": request_func_input.logprobs,
+            # "logprobs": request_func_input.logprobs,
             "stream": True,
-            "ignore_eos": request_func_input.ignore_eos,
+            # "ignore_eos": request_func_input.ignore_eos,
         }
         headers = {
             "Authorization": f"Bearer {request_func_input.api_key or os.environ.get('OPENAI_API_KEY')}"
         }
-
+        print(payload)
         output = RequestFuncOutput()
         output.prompt_len = request_func_input.prompt_len
 
@@ -343,15 +343,15 @@ async def async_request_openai_chat_completions(
                 },
             ],
             "temperature": 0.0,
-            "max_completion_tokens": request_func_input.output_len,
+            # "max_completion_tokens": request_func_input.output_len,
             "stream": True,
-            "ignore_eos": request_func_input.ignore_eos,
+            # "ignore_eos": request_func_input.ignore_eos,
         }
         headers = {
             "Content-Type": "application/json",
             "Authorization": f"Bearer {request_func_input.api_key or os.environ.get('OPENAI_API_KEY')}",
         }
-
+        print(payload)
         output = RequestFuncOutput()
         output.prompt_len = request_func_input.prompt_len
 
