@@ -134,7 +134,7 @@ async def async_request_trt_llm(
         payload = {
             "accumulate_tokens": True,
             "text_input": request_func_input.prompt,
-            "temperature": 0.0,
+            "temperature": 0.1,
             "top_p": 1.0,
             "max_tokens": request_func_input.output_len,
             "stream": True,
@@ -245,7 +245,7 @@ async def async_request_openai_completions(
         payload = {
             "model": request_func_input.model_name,
             "prompt": request_func_input.prompt,
-            "temperature": 0.0,
+            "temperature": 0.1,
             # "best_of": request_func_input.best_of,
             "max_tokens": request_func_input.output_len,
             # "logprobs": request_func_input.logprobs,
@@ -331,9 +331,9 @@ async def async_request_openai_chat_completions(
     ), "OpenAI Chat Completions API URL must end with 'chat/completions'."
 
     async with aiohttp.ClientSession(timeout=AIOHTTP_TIMEOUT) as session:
-        content = [{"type": "text", "text": request_func_input.prompt}]
-        if request_func_input.multi_modal_content:
-            content.append(request_func_input.multi_modal_content)
+        content = request_func_input.prompt
+        # if request_func_input.multi_modal_content:
+        #     content.append(request_func_input.multi_modal_content)
         payload = {
             "model": request_func_input.model_name,
             "messages": [
@@ -342,7 +342,7 @@ async def async_request_openai_chat_completions(
                     "content": content
                 },
             ],
-            "temperature": 0.0,
+            "temperature": 0.1,
             # "max_completion_tokens": request_func_input.output_len,
             "stream": True,
             # "ignore_eos": request_func_input.ignore_eos,
