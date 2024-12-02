@@ -263,6 +263,7 @@ async def async_request_openai_completions(
         ttft = 0.0
         st = time.perf_counter()
         most_recent_timestamp = st
+        latency = 0
         try:
             async with session.post(url=api_url, json=payload,
                                     headers=headers) as response:
@@ -272,14 +273,14 @@ async def async_request_openai_completions(
                         chunk_bytes = chunk_bytes.strip()
                         if not chunk_bytes:
                             continue
-
                         chunk = chunk_bytes.decode("utf-8").removeprefix(
                             "data: ")
                         if chunk == "[DONE]":
                             latency = time.perf_counter() - st
                         else:
                             data = json.loads(chunk)
-
+                            if (data['usage']):
+                                latency = time.perf_counter() - st
                             # NOTE: Some completion API might have a last
                             # usage summary response without a token so we
                             # want to check a token was generated
@@ -357,6 +358,7 @@ async def async_request_openai_chat_completions(
 
         generated_text = ""
         ttft = 0.0
+        latency = 0
         st = time.perf_counter()
         most_recent_timestamp = st
         try:
@@ -375,6 +377,8 @@ async def async_request_openai_chat_completions(
                         else:
                             timestamp = time.perf_counter()
                             data = json.loads(chunk)
+                            if (data['usage']):
+                                latency = time.perf_counter() - st
 
                             delta = data["choices"][0]["delta"]
                             if delta.get("content", None):
